@@ -8,3 +8,17 @@
  * The tutorial is based off of the pagila database's rental table,
  * and contains a query that almost solves this problem.
  */
+SELECT
+    EXTRACT(YEAR FROM rental_year_month) AS "Year",
+    EXTRACT(MONTH FROM rental_year_month) AS "Month",
+    COUNT(*) AS "Total Rentals"
+FROM (
+    SELECT
+        DATE_TRUNC('month', rental_date) AS rental_year_month
+    FROM
+        rental
+) AS rental_years_months
+GROUP BY
+    ROLLUP("Year", "Month")
+ORDER BY
+    "Year", "Month";
